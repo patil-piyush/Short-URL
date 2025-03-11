@@ -1,11 +1,15 @@
 const express = require('express'); //importing express
 const app = express();  //creating an instance of express
-const urlRoute = require('./routes/url');   //importing the router from url.js
+
 const URL = require('./models/url');    //importing the URL model
 const { connectToMongoDB } = require('./connect');  //importing the connect function from connect.js
 const ejs = require('ejs'); //importing ejs
 const path = require('path');   //importing path
+
+//routers
+const urlRoute = require('./routes/url');   //importing the router from url.js
 const staticRoute = require('./routes/staticRouter');  //importing the staticRouter
+const userRoute = require("./routes/user")
 
 app.set('view engine', 'ejs');  //setting the view engine to ejs
 app.set('views', path.resolve('./views'));  //setting the views directory to views
@@ -33,8 +37,10 @@ app.get('/test', async(req, res) =>{
 });
 
 
+//using all the routes
 app.use('/url', urlRoute);  //using the url router
 app.use('/', staticRoute);   //using the staticRouter
+app.use('/user', userRoute);  //using the userRoute
 
 
 //conforming that port is working fine
