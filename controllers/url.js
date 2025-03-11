@@ -11,8 +11,9 @@ async function handleGenerateNewShortURL(req, res) {
         redirectURL: body.url,
         visitHistory: [],
     });
-
-    return res.json({ id: shortID });
+    return res.render('home', {
+        id: shortID,
+    });
 }
 
 async function handleGetAnalytics(req, res){
@@ -25,7 +26,25 @@ async function handleGetAnalytics(req, res){
      });
 }
 
+// adding entry history to the URL and redirecting the user to original url
+async function handleRedirectUser(req, res) {
+    const shortId = req.params.shortId;
+    const entry = await URL.findOneAndUpdate({
+        shortId
+    },{
+        $push: {
+            visitHistory: {
+                timestamp: Date.now(),
+            }
+        }
+    });
+    // if (!entry) {
+    //     return res.status(404).send('Short URL not found');
+    // }
+    res.redirect(entry.redirectURL);
+}
 module.exports = {
     handleGenerateNewShortURL,
     handleGetAnalytics,
+    handleRedirectUser,
 };

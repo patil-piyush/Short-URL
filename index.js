@@ -36,24 +36,6 @@ app.get('/test', async(req, res) =>{
 app.use('/url', urlRoute);  //using the url router
 app.use('/', staticRoute);   //using the staticRouter
 
-// adding entry history to the URL and redirecting the user to original url
-app.get('/:shortId', async (req, res) => {
-    const shortId = req.params.shortId;
-    const entry = await URL.findOneAndUpdate({
-        shortId
-    },{
-        $push: {
-            visitHistory: {
-                timestamp: Date.now(),
-            }
-        }
-    });
-    // if (!entry) {
-    //     return res.status(404).send('Short URL not found');
-    // }
-    res.redirect(entry.redirectURL);
-});
-
 
 //conforming that port is working fine
 app.listen(port, () => {
