@@ -12,8 +12,8 @@ const urlRoute = require('./routes/url');   //importing the router from url.js
 const staticRoute = require('./routes/staticRouter');  //importing the staticRouter
 const userRoute = require('./routes/user')
 const {
-    restrictToLoggedinUserOnly,
-    checkAuth,
+    checkForAuthentication,
+    restrictTo,
 } = require('./middlewares/auth');
 
 app.set('view engine', 'ejs');  //setting the view engine to ejs
@@ -31,6 +31,7 @@ connectToMongoDB('mongodb://localhost:27017/short-url')
 app.use(express.json());    // allowing the json data to be parsed
 app.use(express.urlencoded({ extended: false }));   // allowing the urlencoded data to be parsed that is form data
 app.use(cookieParser());
+app.use(checkForAuthentication);
 
 //rendering the home page
 app.get('/test', async(req, res) =>{
@@ -43,8 +44,8 @@ app.get('/test', async(req, res) =>{
 
 
 //using all the routes
-app.use('/url',restrictToLoggedinUserOnly, urlRoute);  //using the url router
-app.use('/', checkAuth, staticRoute);   //using the staticRouter
+app.use('/url',restrictTo(["NORMAL", "ADMIN"]), urlRoute);  //using the url router
+app.use('/', staticRoute);   //using the staticRouter
 app.use('/user', userRoute);  //using the userRoute
 
 
