@@ -9,5 +9,13 @@ router.get('/', async(req, res) => {  //creating a get request for the home page
     });   //rendering the home page
 });
 
+router.get('/signup', (req,res)=>{
+    return res.render("signup");
+});
+
+router.get('/login', (req,res)=>{
+    return res.render("login");
+});
+
 
 module.exports = router;    //exporting the router

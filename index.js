@@ -9,7 +9,7 @@ const path = require('path');   //importing path
 //routers
 const urlRoute = require('./routes/url');   //importing the router from url.js
 const staticRoute = require('./routes/staticRouter');  //importing the staticRouter
-const userRoute = require("./routes/user")
+const userRoute = require('./routes/user')
 
 app.set('view engine', 'ejs');  //setting the view engine to ejs
 app.set('views', path.resolve('./views'));  //setting the views directory to views
