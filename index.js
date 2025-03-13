@@ -5,11 +5,16 @@ const URL = require('./models/url');    //importing the URL model
 const { connectToMongoDB } = require('./connect');  //importing the connect function from connect.js
 const ejs = require('ejs'); //importing ejs
 const path = require('path');   //importing path
+const cookieParser = require('cookie-parser');
 
 //routers
 const urlRoute = require('./routes/url');   //importing the router from url.js
 const staticRoute = require('./routes/staticRouter');  //importing the staticRouter
 const userRoute = require('./routes/user')
+const {
+    restrictToLoggedinUserOnly,
+    checkAuth,
+} = require('./middlewares/auth');
 
 app.set('view engine', 'ejs');  //setting the view engine to ejs
 app.set('views', path.resolve('./views'));  //setting the views directory to views
@@ -22,10 +27,10 @@ connectToMongoDB('mongodb://localhost:27017/short-url')
     console.log('Connected to MongoDB');
 });
 
-// allowing the json data to be parsed
-app.use(express.json());
-// allowing the urlencoded data to be parsed that is form data
-app.use(express.urlencoded({ extended: false }));
+
+app.use(express.json());    // allowing the json data to be parsed
+app.use(express.urlencoded({ extended: false }));   // allowing the urlencoded data to be parsed that is form data
+app.use(cookieParser());
 
 //rendering the home page
 app.get('/test', async(req, res) =>{
@@ -38,8 +43,8 @@ app.get('/test', async(req, res) =>{
 
 
 //using all the routes
-app.use('/url', urlRoute);  //using the url router
-app.use('/', staticRoute);   //using the staticRouter
+app.use('/url',restrictToLoggedinUserOnly, urlRoute);  //using the url router
+app.use('/', checkAuth, staticRoute);   //using the staticRouter
 app.use('/user', userRoute);  //using the userRoute
 
 
