@@ -1,4 +1,7 @@
+//importing basic packages
 const shortid = require('shortid');
+
+//importing URL model from models
 const URL = require('../models/url');
 
 // This function will handle the generation of a new short URL
@@ -46,6 +49,8 @@ async function handleRedirectUser(req, res) {
     }
     res.redirect(entry.redirectURL);
 }
+
+//exporting the functions
 module.exports = {
     handleGenerateNewShortURL,
     handleGetAnalytics,

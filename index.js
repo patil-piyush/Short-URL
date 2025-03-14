@@ -1,13 +1,17 @@
+//importing basic packages
 const express = require('express'); //importing express
 const app = express();  //creating an instance of express
-
-const URL = require('./models/url');    //importing the URL model
-const { connectToMongoDB } = require('./connect');  //importing the connect function from connect.js
+const cookieParser = require('cookie-parser');
 const ejs = require('ejs'); //importing ejs
 const path = require('path');   //importing path
-const cookieParser = require('cookie-parser');
 
-//routers
+//importing database models
+const URL = require('./models/url');    //importing the URL model
+const { connectToMongoDB } = require('./connect');  //importing the connect function from connect.js
+
+
+
+// importing routers
 const urlRoute = require('./routes/url');   //importing the router from url.js
 const staticRoute = require('./routes/staticRouter');  //importing the staticRouter
 const userRoute = require('./routes/user')
@@ -16,8 +20,11 @@ const {
     restrictTo,
 } = require('./middlewares/auth');
 
+
 app.set('view engine', 'ejs');  //setting the view engine to ejs
 app.set('views', path.resolve('./views'));  //setting the views directory to views
+
+
 
 const port = 3000;  //setting the port to 3000
 
@@ -28,10 +35,12 @@ connectToMongoDB('mongodb://localhost:27017/short-url')
 });
 
 
+//middlewares
 app.use(express.json());    // allowing the json data to be parsed
 app.use(express.urlencoded({ extended: false }));   // allowing the urlencoded data to be parsed that is form data
 app.use(cookieParser());
 app.use(checkForAuthentication);
+
 
 //rendering the home page
 app.get('/test', async(req, res) =>{

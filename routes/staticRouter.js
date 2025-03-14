@@ -1,10 +1,12 @@
 const express = require('express'); //importing express
+
 const URL = require("../models/url");
 const { restrictTo } = require('../middlewares/auth');
+
 const router = express.Router();    //creating an instance of express router
 
 
-router.get('/admin/urls', restrictTo(["ADMIN"]), async (req, res) => {  //creating a get request for the home page
+router.get('/admin/urls', restrictTo(["ADMIN"]), async (req, res) => {  
     const allurls = await URL.find({});
     return res.render('home', {
         urls: allurls,

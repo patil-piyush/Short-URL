@@ -98,6 +98,10 @@ url-shortener/
 - New users can create an account to start using the service.
 ![Signup Page](screenshots/signup-page.png)
 
+### 📝 Shorten-Url Page
+- Shorten-Url of a entered original url will be shown here.
+![Shorten-Url Page](screenshots/Shorten-Url-page.png)
+
 ### 📊 URL Analytics Page
 - View detailed analytics for each shortened URL, including click counts and timestamps.
 ![Analytics Page](screenshots/analytics-page.png)
